@@ -1,7 +1,7 @@
 ```mermaid
-sequenceDiagram;
-participant browser;
-participant server;
+sequenceDiagram
+participant browser
+participant server
 
     Note right of browser: User enters text and clicks on the "Save" button
 
@@ -32,6 +32,6 @@ participant server;
     activate server
     server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
     deactivate server
-```
 
     Note right of browser: The browser executes the callback function that renders the notes
+```
