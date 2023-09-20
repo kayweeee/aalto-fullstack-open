@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import personsService from "./services/persons";
 //components
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
@@ -15,8 +15,9 @@ const App = () => {
 
   // fetch initial data
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    personsService.getData().then((response) => {
+      setPersons(response);
+      console.log(response);
     });
   }, []);
 
@@ -29,14 +30,32 @@ const App = () => {
           person.name.toLowerCase().trim() === newName.toLowerCase().trim()
       )
     ) {
-      alert(`${newName} already exists in the phonebook`);
+      if (
+        confirm(
+          `${newName} already exists in the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        /// add in code to update number
+        const person = persons.find(
+          (n) => n.name.toLowerCase().trim() === newName.toLowerCase().trim()
+        );
+        const changedPerson = { ...person, number: newNumber };
+        personsService
+          .update(person.id, changedPerson)
+          .then((response) =>
+            setPersons(
+              persons.map((n) => (n.id === response.id ? response : n))
+            )
+          );
+      }
     } else {
       const newEntry = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1,
       };
-      setPersons(persons.concat(newEntry));
+      personsService.create(newEntry).then((response) => {
+        setPersons(persons.concat(response));
+      });
     }
     setNewName("");
     setNewNumber("");
@@ -54,6 +73,16 @@ const App = () => {
     }
     setSearchTerm("");
   };
+
+  const handleDelete = (id) => {
+    const person = persons.find((n) => n.id === id);
+    if (confirm(`Delete ${person.name}`)) {
+      personsService.remove(id);
+      setPersons(persons.filter((n) => n.id !== id));
+    }
+  };
+
+  // ----------------------------------------------
 
   return (
     <div>
@@ -73,7 +102,7 @@ const App = () => {
         handleSubmit={handleSubmit}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons persons={persons} handleDelete={handleDelete} />
     </div>
   );
 };
