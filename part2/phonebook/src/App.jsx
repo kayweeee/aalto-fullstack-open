@@ -4,6 +4,7 @@ import personsService from "./services/persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import SuccessNoti from "./components/SuccessNoti";
 
 const App = () => {
   // state
@@ -12,6 +13,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState("");
+  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState(null);
 
   // fetch initial data
   useEffect(() => {
@@ -26,6 +29,7 @@ const App = () => {
   // event handler functions
   const handleSubmit = (event) => {
     event.preventDefault();
+    // UPDATE
     if (
       persons.some(
         (person) =>
@@ -37,19 +41,29 @@ const App = () => {
           `${newName} already exists in the phonebook, replace the old number with a new one?`
         )
       ) {
-        /// add in code to update number
         const person = persons.find(
           (n) => n.name.toLowerCase().trim() === newName.toLowerCase().trim()
         );
         const changedPerson = { ...person, number: newNumber };
         personsService
           .update(person.id, changedPerson)
-          .then((response) =>
+          .then((response) => {
             setPersons(
               persons.map((n) => (n.id === response.id ? response : n))
-            )
-          )
-          .catch((e) => console.log(e));
+            );
+            setSuccess(`${response.name}'s number has been changed`);
+            setTimeout(() => {
+              setSuccess(null);
+            }, 3000);
+          })
+          // IF UPDATE FAILS
+          .catch((e) => {
+            setError(`${person.name} has already been deleted`);
+            setPersons(persons.filter((n) => n.name !== newName));
+            setTimeout(() => {
+              setError(null);
+            }, 3000);
+          });
       }
     } else {
       const newEntry = {
@@ -60,9 +74,15 @@ const App = () => {
         .create(newEntry)
         .then((response) => {
           setPersons(persons.concat(response));
+          setSuccess(`${response.name}'s number has been added`);
+          setTimeout(() => {
+            setSuccess(null);
+          }, 3000);
         })
         .catch((e) => console.log(e));
     }
+
+    // RESET FORM VALUES
     setNewName("");
     setNewNumber("");
   };
@@ -85,6 +105,10 @@ const App = () => {
     if (confirm(`Delete ${person.name}`)) {
       personsService.remove(id).catch((e) => console.log(e));
       setPersons(persons.filter((n) => n.id !== id));
+      setError(`${person.name} has been deleted`);
+      setTimeout(() => {
+        setError(null);
+      }, 3000);
     }
   };
 
@@ -93,6 +117,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <SuccessNoti success={success} error={error} />
       <Filter
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
