@@ -15,10 +15,12 @@ const App = () => {
 
   // fetch initial data
   useEffect(() => {
-    personsService.getData().then((response) => {
-      setPersons(response);
-      console.log(response);
-    });
+    personsService
+      .getData()
+      .then((response) => {
+        setPersons(response);
+      })
+      .catch((e) => console.log(e));
   }, []);
 
   // event handler functions
@@ -46,16 +48,20 @@ const App = () => {
             setPersons(
               persons.map((n) => (n.id === response.id ? response : n))
             )
-          );
+          )
+          .catch((e) => console.log(e));
       }
     } else {
       const newEntry = {
         name: newName,
         number: newNumber,
       };
-      personsService.create(newEntry).then((response) => {
-        setPersons(persons.concat(response));
-      });
+      personsService
+        .create(newEntry)
+        .then((response) => {
+          setPersons(persons.concat(response));
+        })
+        .catch((e) => console.log(e));
     }
     setNewName("");
     setNewNumber("");
@@ -77,7 +83,7 @@ const App = () => {
   const handleDelete = (id) => {
     const person = persons.find((n) => n.id === id);
     if (confirm(`Delete ${person.name}`)) {
-      personsService.remove(id);
+      personsService.remove(id).catch((e) => console.log(e));
       setPersons(persons.filter((n) => n.id !== id));
     }
   };
