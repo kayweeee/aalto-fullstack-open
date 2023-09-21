@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import CountryServices from "./services/countries";
 // components
 import SearchBar from "./components/SearchBar";
