@@ -4,6 +4,7 @@ import CountryServices from "./services/countries";
 // components
 import SearchBar from "./components/SearchBar";
 import CountryProfile from "./components/CountryProfile";
+import SearchResults from "./components/SearchResults";
 
 const App = () => {
   // state
@@ -34,7 +35,7 @@ const App = () => {
     );
 
     // CHECK FOR NUMBER OF RESULTS
-    if (countries.length > 2 && countries.length <= 10) {
+    if (countries.length > 1 && countries.length <= 10) {
       setSearchResults(countries);
       setError("");
     }
@@ -66,14 +67,8 @@ const App = () => {
         setSearch={setSearch}
         handleSearch={handleSearch}
       />
-      {console.log(search)}
       {error}
-      {searchResults.map((n) => (
-        <div key={n}>
-          <p>{n}</p>
-          <button onClick={() => handleClick(n)}>show</button>
-        </div>
-      ))}
+      <SearchResults searchResults={searchResults} handleClick={handleClick} />
       {selectedCountry ? (
         <CountryProfile selectedCountry={selectedCountry} />
       ) : null}
