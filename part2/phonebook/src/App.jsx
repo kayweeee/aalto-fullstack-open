@@ -58,7 +58,7 @@ const App = () => {
           })
           // IF UPDATE FAILS
           .catch((e) => {
-            setError(`${person.name} has already been deleted`);
+            setError(e.response.data.error);
             setPersons(persons.filter((n) => n.name !== newName));
             setTimeout(() => {
               setError(null);
@@ -79,7 +79,12 @@ const App = () => {
             setSuccess(null);
           }, 3000);
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          setError(e.response.data.error);
+          setTimeout(() => {
+            setError(null);
+          }, 3000);
+        });
     }
 
     // RESET FORM VALUES
