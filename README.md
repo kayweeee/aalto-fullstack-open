@@ -12,5 +12,5 @@ App link: https://aalto-fullstack-course.fly.dev/
 **Part 4: Testing Express servers, user administration**   
 Repository link: https://github.com/kayweeee/aalto_fullstack_part4
 
-**Part 5: Testing React Apps**
+**Part 5: Testing React Apps**     
 Repository link: https://github.com/kayweeee/aalto_fullstack_part5
