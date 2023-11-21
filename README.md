@@ -14,3 +14,6 @@ Repository link: https://github.com/kayweeee/aalto_fullstack_part4
 
 **Part 5: Testing React Apps**     
 Repository link: https://github.com/kayweeee/aalto_fullstack_part5
+
+**Part 6: Advanced State Management**
+Repository link: https://github.com/kayweeee/aalto-fullstack-part6
