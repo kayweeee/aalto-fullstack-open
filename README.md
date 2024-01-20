@@ -25,7 +25,7 @@ Repository link: https://github.com/kayweeee/aalto-fullstack-part6
 Repository link: https://github.com/kayweeee/aalto-fullstack-part7    
 Some exercises in this part made use of the repository from part 5. The branch can be found here: https://github.com/kayweeee/aalto_fullstack_part5/tree/part-7    
 
-**Part 8: GraphQL (private)**
+**Part 8: GraphQL (private)**     
 Repository link: https://github.com/kayweeee/aalto_fullstack_part8     
 
 **Part 9: TypeScript**     
